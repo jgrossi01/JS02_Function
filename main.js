@@ -17,7 +17,9 @@ do {
   let totalParcial;
   let modelo;
 
-  modelo = prompt(`Que vehiculo precisa?\nEtios\nCorolla\nHilux`).toLowerCase();
+  modelo = prompt(`Que vehiculo precisa?\nEtios\nCorolla\nHilux`);
+  if(modelo) { modelo = modelo.toLowerCase()};
+
   while (modelo != "etios" && modelo != "corolla" && modelo != "hilux") {
     continuar = confirm(
       "No encontramos el modelo solicitado. Desea continuar?"
@@ -31,7 +33,7 @@ do {
       break;
     }
   }
-
+  
   if (continuar) {
     cantidad = Number(prompt(`Cuantos ${modelo} precisa rentar?`));
     while (cantidad <= 0 || isNaN(cantidad)) {
@@ -109,27 +111,34 @@ function aplicarCupon(codigoCupon) {
   }
 }
 
-let tieneCupon = confirm("Tiene un cupón de descuento?");
+let tieneCupon;
+if(total>0){
+  tieneCupon = confirm("Tiene un cupón de descuento?");
+}
 
 while (tieneCupon) {
   if (errorCupon) {
     tieneCupon = confirm("No encontramos el cupón. Desea volver a intentar?");
     if (tieneCupon) {
-      codigoCupon = prompt(`Ingrese su cupón`).toLowerCase();
+      codigoCupon = prompt(`Ingrese su cupón`);
     }
   } else {
-    codigoCupon = prompt(`Ingrese su cupón`).toLowerCase();
+    codigoCupon = prompt(`Ingrese su cupón`);
   }
   if (codigoCupon) {
-    devolucionCupon = aplicarCupon(codigoCupon);
+    devolucionCupon = aplicarCupon(codigoCupon.toLowerCase());
   }
 }
 
 if (!devolucionCupon) {
-  msj += `<p>Por un total final de: $${total}</p></br>`;
+  if(total>0){
+    msj += `<p>Por un total final de: $${total}</p></br>`;
+  } else {
+    msj += `<p>No realizó ninguna compra</p></br>`;
+  }
 } else {
   msj += devolucionCupon;
 }
 
-console.log(`Usted rentó correctamente: ${msj}`);
+console.log(`${msj}`);
 document.getElementById("resultado").innerHTML += msj;
